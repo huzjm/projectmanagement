@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "359514012153",
+    "project_id": "hesprojectmanagment",
+    "storage_bucket": "hesprojectmanagment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359514012153:android:e4a7cf7f2dfd514239a528",
+        "android_client_info": {
+          "package_name": "com.projectmanagement.hes.hes_pm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359514012153-cs269cnj9bi659bevnfen0d107lqkshd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.projectmanagement.hes.hes_pm",
+            "certificate_hash": "e354248f843a7ba89b6e780d4d6fc90d8479ca71"
+          }
+        },
+        {
+          "client_id": "359514012153-m2iupnlgk29a54hvr88j3uitg8cm053c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBu5VdEvKLkzuJ2Jv1ji37J-DCA3V2VLgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359514012153-m2iupnlgk29a54hvr88j3uitg8cm053c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
