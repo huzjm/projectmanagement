@@ -22,6 +22,6 @@ String truncate(String text, { length: 20, omission: '...' }) {
   }
   return text.replaceRange(length, text.length, omission);
 }
-String? capitalize(String s) => (s != null && s.length > 1)
+String? capitalize(String s) => ( s.length > 1)
     ? s[0].toUpperCase() + s.substring(1)
     : s != null ? s.toUpperCase() : null;

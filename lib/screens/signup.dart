@@ -71,14 +71,14 @@ class _SignUpState extends State<SignUp> {
     } else {
       try{
         UserCredential result = await auth.createUserWithEmailAndPassword(email: email.text, password: password.text);
-        // FirebaseFirestore.instance.collection("User").doc(result.user!.uid).set({
-        //   "UserName":username,
-        //   "UserID":result.user!.uid,
-        //   "UserEmail":email,
-        //   "PhoneNumber":phoneNumber,
-        //   "Address": address,
-        //   "Auth": "new",
-        // });
+        FirebaseFirestore.instance.collection("User").doc(result.user!.uid).set({
+
+          "UserID":result.user!.uid,
+          "UserEmail":email,
+
+
+          "Auth": "new",
+        });
       } on PlatformException catch(e){
         print(e.message.toString());
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message!)));
