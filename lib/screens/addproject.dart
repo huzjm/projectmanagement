@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hes_pm/model/project.dart';
+import 'package:hes_pm/screens/addtask.dart';
+import 'package:hes_pm/widgets/mytextformField.dart';
 import 'package:intl/intl.dart';
 
+import '../model/task.dart';
 import '../shared/size_config.dart';
 
 class AddProject extends StatefulWidget {
@@ -11,30 +16,36 @@ class AddProject extends StatefulWidget {
   State<AddProject> createState() => _AddProjectState();
 }
 
+const List<String> locationList = ["P&G Hub", "P&G Port Qasim", "Grating"];
+
 final GlobalKey<ScaffoldState> _addProjectKey = GlobalKey<ScaffoldState>();
 final GlobalKey<FormState> _formAddProjectKey = GlobalKey<FormState>();
 
-final TextEditingController _projectname = TextEditingController();
-final TextEditingController _dateController = TextEditingController();
+
 
 class _AddProjectState extends State<AddProject> {
-  DateTime selectedDate = DateTime.now();
+  DateTime startDate = DateTime.now();
   DateTime dueDate = DateTime.now();
-
+  String location = locationList.first;
+  final TextEditingController _projectName = TextEditingController();
+  final TextEditingController _workHours = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    String? dateinstring = DateFormat.yMMMd().format(selectedDate);
-    String? duedateinstring = DateFormat.yMMMd().format(dueDate);
+    String? dateString = DateFormat.yMMMd().format(startDate);
+    String? dueDateString = DateFormat.yMMMd().format(dueDate);
 
     Future<Null> _selectDate(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
           context: context,
-          initialDate: selectedDate,
+          initialDate: startDate,
           firstDate: DateTime(2015, 8),
           lastDate: DateTime(2101));
-      if (picked != null && picked != selectedDate)
+      if (picked != null && picked != startDate)
         setState(() {
-          selectedDate = picked;
+          startDate = picked;
+          if (dueDate.isBefore(startDate)) {
+            dueDate = picked;
+          }
         });
     }
 
@@ -42,7 +53,7 @@ class _AddProjectState extends State<AddProject> {
       final DateTime? picked = await showDatePicker(
           context: context,
           initialDate: dueDate,
-          firstDate: selectedDate,
+          firstDate: startDate,
           lastDate: DateTime(2101));
       if (picked != null && picked != dueDate)
         setState(() {
@@ -51,7 +62,6 @@ class _AddProjectState extends State<AddProject> {
     }
 
     return Scaffold(
-
       key: _addProjectKey,
       appBar: AppBar(
         title: Text("Add Project", style: TextStyle(color: Colors.black)),
@@ -65,101 +75,164 @@ class _AddProjectState extends State<AddProject> {
           },
         ),
       ),
-      body: Padding(
-        padding:  EdgeInsets.all(getWidth(2)),
-        child: Form(
-          key: _formAddProjectKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextFormField(
-                controller: _projectname,
-                decoration: InputDecoration(
-                    icon: Icon(Icons.file_copy), labelText: 'Project Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: getHeight(5),
-              ),
-              Text("Project Start Date",style: TextStyle(color: Colors.lightBlue),),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(Icons.calendar_month,color: Colors.lightBlue,),
-                  Container(
-                    decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.lightBlue))),
-                    width: getWidth(60),
-                    height: getHeight(5),
-                    alignment: Alignment.center,
-                    child: Text(
-                      dateinstring
-                          )
-
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _selectDate(context), // Refer step 3
-                    child: Text(
-                      'Select date',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(getWidth(2)),
+          child: Form(
+            key: _formAddProjectKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                TextFormField(
+                  controller: _projectName,
+                  decoration: InputDecoration(
+                      icon: Icon(Icons.file_copy), labelText: 'Project Name'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: getHeight(5),
+                ),
+                Text(
+                  "Location",
+                  style: TextStyle(color: Colors.lightBlue),
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.location_on_sharp,
+                      color: Colors.lightBlue,
                     ),
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.lightBlue)),
-                  ),
-
-                ],
-              ),
-              SizedBox(
-                height: getHeight(5),
-              ),
-              Text("Project Due Date",style: TextStyle(color: Colors.lightBlue),),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(Icons.calendar_month,color: Colors.lightBlue,),
-                  Container(
-                      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.lightBlue))),
-                      width: getWidth(60),
-                      height: getHeight(5),
-                      alignment: Alignment.center,
+                    SizedBox(
+                      width: getWidth(1),
+                    ),
+                    Container(
+                      width: getWidth(88),
+                      child: DropdownButton<String>(
+                          value: location,
+                          isExpanded: true,
+                          hint: Text("Location"),
+                          elevation: 16,
+                          underline: Container(
+                            height: 1,
+                            color: Colors.lightBlue,
+                          ),
+                          items: locationList
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            // This is called when the user selects an item.
+                            setState(() {
+                              location = value!;
+                            });
+                          }),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: getHeight(5),
+                ),
+                Text(
+                  "Start Date",
+                  style: TextStyle(color: Colors.lightBlue),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(
+                      Icons.calendar_month,
+                      color: Colors.lightBlue,
+                    ),
+                    Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(color: Colors.lightBlue))),
+                        width: getWidth(60),
+                        height: getHeight(5),
+                        alignment: Alignment.center,
+                        child: Text(dateString)),
+                    ElevatedButton(
+                      onPressed: () => _selectDate(context), // Refer step 3
                       child: Text(
-                          duedateinstring
-                      )
-
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _selectDueDate(context), // Refer step 3
-                    child: Text(
-                      'Select date',
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
+                        'Select date',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold),
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.lightBlue)),
                     ),
-                    style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.lightBlue)),
-                  ),
+                  ],
+                ),
+                SizedBox(
+                  height: getHeight(5),
+                ),
+                Text(
+                  "Due Date",
+                  style: TextStyle(color: Colors.lightBlue),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(
+                      Icons.calendar_month,
+                      color: Colors.lightBlue,
+                    ),
+                    Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(color: Colors.lightBlue))),
+                        width: getWidth(60),
+                        height: getHeight(5),
+                        alignment: Alignment.center,
+                        child: Text(dueDateString)),
+                    ElevatedButton(
+                      onPressed: () => _selectDueDate(context), // Refer step 3
+                      child: Text(
+                        'Select date',
+                        style: TextStyle(
+                             fontWeight: FontWeight.bold),
+                      ),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.lightBlue)),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: getHeight(5),
+                ),
+                Container(
+                  width: getWidth(60),
+                  child: NumberTextField(controller: _workHours, labelText: 'Labor Hours',)
 
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formAddProjectKey.currentState!.validate()) {
-                    FirebaseFirestore.instance.collection("projects").add(
-                        {"projectName": _projectname.text, "startDate": selectedDate,"dueDate":dueDate});
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Successful Submission')),
-                    );
-                  }
-                },
-                child: const Text('Submit'),
-              ),
-            ],
+                ),
+                SizedBox(
+                  height: getHeight(5),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+
+                      onPressed: () {if (_formAddProjectKey.currentState!.validate()) {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>AddTask(name:_projectName.text, startDate: startDate, dueDate:dueDate,location:location,hours:double.parse(_workHours.text))));}
+
+                      },
+                      child: const Text('Add Tasks'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

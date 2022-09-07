@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hes_pm/screens/seeprojects.dart';
 import 'package:hes_pm/shared/firebase_auth.dart';
 import 'package:hes_pm/shared/size_config.dart';
 import 'package:hes_pm/widgets/mybutton.dart';
@@ -58,7 +59,8 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             MyButton(name: "Add Project", onPressed: (){
               Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>AddProject()));
-            }, width: getWidth(20)),
+            }, width: getWidth(30)),
+            MyButton(name: "See Projects", onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>SeeProjects()));}, width: getWidth(30)),
             MyButton(name: "Logout",width: getWidth(20),
               onPressed: () {
                 _signOut();

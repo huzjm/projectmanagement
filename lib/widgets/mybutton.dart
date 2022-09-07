@@ -19,7 +19,7 @@ class MyButton extends StatelessWidget {
           onPressed: onPressed,
           child: Text(name,
               style: TextStyle(
-                  color: Colors.black87,
+
                   fontWeight: FontWeight.bold
 
               ))),
