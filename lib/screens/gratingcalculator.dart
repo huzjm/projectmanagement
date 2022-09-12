@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/mytextformField.dart';
+
 class GratingCalculator extends StatefulWidget {
   const GratingCalculator({Key? key}) : super(key: key);
 
@@ -7,13 +9,21 @@ class GratingCalculator extends StatefulWidget {
   State<GratingCalculator> createState() => _GratingCalculatorState();
 }
 final GlobalKey<ScaffoldState> _gratingCalcKey = GlobalKey<ScaffoldState>();
-
+const List<String> materialList = ["SS", "MS"];
+const List<String> unitList = ["mm", "inches"];
 class _GratingCalculatorState extends State<GratingCalculator> {
-  double material=32;
+  double materialDensity=32;
   String mat='';
+  String material = materialList.first;
+  double unitDouble =1;
+  String unitText='';
+  String unit = unitList.first;
+  final TextEditingController _crossBarW = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(title: Text("Grating Calculator", style: TextStyle(color: Colors.black)),
         centerTitle: true,
@@ -28,53 +38,93 @@ class _GratingCalculatorState extends State<GratingCalculator> {
       body: Container(
         child: Column(
           children: [
-            Row(
-              children: [
 
-                Container(
-                  color: Colors.lightBlueAccent,
-
-                  child: DropdownButton(
-
-                    hint: mat == ''
-                        ? Text('Select Material',
-                      style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)
-                        : Text(
-                      mat,
-                        style: TextStyle(fontWeight: FontWeight.bold)
-                    ),
-
-                    items: ['MS', 'SS'].map(
-                          (val) {
-                        return DropdownMenuItem<String>(
-                          value: val,
-                          child: Text(val),
-                        );
-                      },
-                    ).toList(),
-                    onChanged: (val) {
-                      setState(() {
-
-                        if(val=="MS"){
-                          material=32;
-                          mat = "MS";
-
-                        }
-                        if(val=="SS"){
-                          material=64;
-                          mat = "SS";
-                        }
-                        print(material.toString());
-                      });
-                    },
-                  ),
+            DropdownButton<String>(
+                hint: mat == ''
+                    ? Text('Select Material',
+                  style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)
+                    : Text(
+                    mat,
+                    style: TextStyle(fontWeight: FontWeight.bold)
                 ),
 
-              ],
-            )
 
+
+                elevation: 16,
+                underline: Container(
+                  height: 1,
+                  color: Colors.lightBlue,
+                ),
+                items: materialList
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    if(value=="MS"){
+                      materialDensity=32;
+                      mat = "MS";
+                      material=value!;
+
+                    }
+                    if(value=="SS"){
+                      materialDensity=64;
+                      mat = "SS";
+                      material=value!;
+                    }
+                    print(materialDensity.toString());
+                  });
+                }),
+
+            DropdownButton<String>(
+                hint: unitText == ''
+                    ? Text('Select Unit',
+                  style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),)
+                    : Text(
+                    unitText,
+                    style: TextStyle(fontWeight: FontWeight.bold)
+                ),
+
+
+
+                elevation: 16,
+                underline: Container(
+                  height: 1,
+                  color: Colors.lightBlue,
+                ),
+                items: unitList
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? value) {
+                  // This is called when the user selects an item.
+                  setState(() {
+                    if(value=="mm"){
+                      unitDouble=1;
+                      unitText = "mm";
+                      unit=value!;
+
+                    }
+                    if(value=="inches"){
+                      unitDouble=2;
+                      unitText = "inches";
+                      unit=value!;
+                    }
+                    print(unitDouble.toString());
+                  });
+                }),
+            NumberTextField(labelText: 'CrossBarWidth',controller:  _crossBarW, icon:const Icon(Icons.alarm,
+              color: Colors.lightBlue,))
           ],
         ),
+
       ),
       key: _gratingCalcKey ,
     );

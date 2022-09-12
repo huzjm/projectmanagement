@@ -40,18 +40,7 @@ class _SeeProjectsState extends State<SeeProjects> {
             vertical: getHeight(3), horizontal: getWidth(2)),
         child: Column(
           children: [
-            // Container(
-            //   height: getHeight(5),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: <Widget>[
-            //       Text(
-            //         "Projects",
-            //         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+
             Container(
 
               height: getHeight(80),

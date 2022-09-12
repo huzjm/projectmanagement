@@ -25,9 +25,17 @@ MyTextFormField({required this.controller,required this.name, required this.icon
   }
 }
 class NumberTextField extends StatelessWidget {
-  const NumberTextField({Key? key, required this.controller, required this.labelText}) : super(key: key);
+
+  const NumberTextField({required this.labelText,required this.controller,this.icon=const Icon(
+    Icons.timelapse_outlined,
+    color: Colors.lightBlue,
+  )});
+
+
+
   final TextEditingController controller;
   final String labelText;
+  final Icon icon;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
