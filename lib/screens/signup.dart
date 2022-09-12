@@ -15,7 +15,7 @@ class SignUp extends StatefulWidget {
   final Function() onClickedSignIn;
 
 
-  static var routeName="/signup";
+
   SignUp({required this.onClickedSignIn});
   @override
   _SignUpState createState() => _SignUpState();

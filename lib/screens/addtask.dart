@@ -59,7 +59,7 @@ class _AddTaskState extends State<AddTask> {
         key: _addTaskKey,
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Form(
               key: _formAddTaskKey,
               child: Column(
@@ -199,7 +199,7 @@ class _AddTaskState extends State<AddTask> {
                                     name: _name.text,
                                     simul: _simul,
                                     welding: _welding,
-                                    index: counter);
+                                    index: counter-1);
                                 taskList.add(task);
                                 _formAddTaskKey.currentState?.reset();
                                 _fitter = false;

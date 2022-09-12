@@ -9,7 +9,7 @@ import 'package:hes_pm/widgets/passwordTextform.dart';
 import 'package:hes_pm/screens/signup.dart';
 
 class Login extends StatefulWidget {
-  static String routeName="/login";
+
   final Function() onClickedSignUp;
 
 Login({required this.onClickedSignUp});

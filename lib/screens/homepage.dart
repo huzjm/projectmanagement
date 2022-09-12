@@ -3,16 +3,20 @@ import 'package:hes_pm/screens/seeprojects.dart';
 import 'package:hes_pm/shared/firebase_auth.dart';
 import 'package:hes_pm/shared/size_config.dart';
 import 'package:hes_pm/widgets/mybutton.dart';
+import 'package:provider/provider.dart';
 
+import '../model/project.dart';
+import '../provider/provider.dart';
 import 'addproject.dart';
+import 'gratingcalculator.dart';
 
 class HomePage extends StatefulWidget {
-  static var routeName = "/homepage";
+
 
   @override
   _HomePageState createState() => _HomePageState();
 }
-
+late MainProvider provider;
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _homePageKey = GlobalKey<ScaffoldState>();
 
@@ -21,7 +25,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { provider = Provider.of<MainProvider>(context);
+  provider.getProjectData();
+  List<Project> projects = provider.projectList;
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
@@ -60,8 +66,11 @@ class _HomePageState extends State<HomePage> {
             MyButton(name: "Add Project", onPressed: (){
               Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>AddProject()));
             }, width: getWidth(30)),
-            MyButton(name: "See Projects", onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>SeeProjects()));}, width: getWidth(30)),
-            MyButton(name: "Logout",width: getWidth(20),
+            MyButton(name: "See Projects", onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>SeeProjects( projects: projects,)));}, width: getWidth(30)),
+            MyButton(name: "Gratings", onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>GratingCalculator()));
+            }, width: getWidth(30)),
+            MyButton(name: "Logout",width: getWidth(30),
               onPressed: () {
                 _signOut();
               },

@@ -45,9 +45,10 @@ class _ReviewProjectState extends State<ReviewProject> {
                   "Start Date: ${DateFormat.yMMMd().format(widget.project.startDate)}"),
               Text(
                   "Due Date: ${DateFormat.yMMMd().format(widget.project.dueDate)}"),
+              Text("Hours: ${widget.project.hours.toString()}"),
               Text(
                 "Tasks",
-                style: TextStyle(decoration: TextDecoration.underline),
+                style: TextStyle(fontSize: 18, decoration: TextDecoration.underline),
               ),
               SingleTask(taskList: widget.project.tasks),
 
@@ -68,6 +69,7 @@ class _ReviewProjectState extends State<ReviewProject> {
                               "fitter": c.fitter,
                               "simul": c.simul,
                               "name": c.name,
+                              "index":c.index
                             })
                         .toList(),
                   });

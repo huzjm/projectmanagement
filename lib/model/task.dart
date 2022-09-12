@@ -5,7 +5,7 @@ class Task{
   final bool helper;
   final bool fitter;
   final bool simul;
-  final index;
+  final int index;
 
 
 
