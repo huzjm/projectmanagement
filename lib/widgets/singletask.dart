@@ -15,7 +15,8 @@ class SingleTask extends StatefulWidget {
 class _SingleTaskState extends State<SingleTask> {
   List<TableRow> getList() {
     List<TableRow> tableRows = widget.taskList
-        .map((e) => TableRow(children: <Widget>[
+        .map((e) => TableRow(
+        children: <Widget>[
               Center(
                 child: Container(height: getHeight(4),
                   child: Text(e.index.toString()),
@@ -29,7 +30,7 @@ class _SingleTaskState extends State<SingleTask> {
               ),
               Center(
                 child: Container(height: getHeight(4),
-                  child: Text(e.hours.toString()),
+                  child: Text(e.days.toString()),
                 ),
               ),
               Center(
@@ -38,10 +39,7 @@ class _SingleTaskState extends State<SingleTask> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (e.welding) Text('W'),
-                      if (e.helper) Text('H'),
-                      if (e.fitter) Text('F'),
-                      if (e.simul) Text('S'),
+                      Text(e.simul?"Sim":"")
                     ],
                   ),
                 ),
@@ -59,7 +57,8 @@ class _SingleTaskState extends State<SingleTask> {
         height: getHeight(30),
         child: SingleChildScrollView(
         child: Table(
-          border: TableBorder(
+          border: TableBorder(bottom: BorderSide(width: 1,color: Colors.blue, style: BorderStyle.solid),
+              top: BorderSide(width: 1,color: Colors.blue, style: BorderStyle.solid),verticalInside: BorderSide(width: 1,color: Colors.blue, style: BorderStyle.solid),
               horizontalInside: BorderSide(width: 1, color: Colors.blue, style: BorderStyle.solid)
           ),
           columnWidths: const <int, TableColumnWidth>{
@@ -77,7 +76,7 @@ class _SingleTaskState extends State<SingleTask> {
                   child: Container(
                     height: getHeight(5),
                     child: Text(
-                      "S.no",
+                      "#",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,fontSize: 18,),
                     ),
@@ -92,7 +91,7 @@ class _SingleTaskState extends State<SingleTask> {
                 ),
                 Center(
                   child: Container(height: getHeight(5),
-                    child: Text("Hours",
+                    child: Text("Days",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,fontSize: 18)),
                   ),

@@ -120,7 +120,7 @@ class _GratingCalculatorState extends State<GratingCalculator> {
                     print(unitDouble.toString());
                   });
                 }),
-            NumberTextField(labelText: 'CrossBarWidth',controller:  _crossBarW, icon:const Icon(Icons.alarm,
+            NumberTextField(obserIcon:true,labelText: 'CrossBarWidth',controller:  _crossBarW, icon: Icon(Icons.border_horizontal_sharp,
               color: Colors.lightBlue,))
           ],
         ),

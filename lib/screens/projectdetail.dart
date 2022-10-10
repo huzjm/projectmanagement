@@ -33,7 +33,7 @@ class ProjectDetail extends StatelessWidget {
                 "Start Date: ${DateFormat.yMMMd().format(project.startDate)}"),
             Text(
                 "Due Date: ${DateFormat.yMMMd().format(project.dueDate)}"),
-            Text("Hours: ${project.hours.toString()}"),
+            Text("Labor Days: ${project.days.toString()}"),
             Text(
               "Tasks",
               style: TextStyle(fontSize: 18, decoration: TextDecoration.underline),

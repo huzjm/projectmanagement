@@ -41,11 +41,10 @@ class MyApp extends StatelessWidget {
             final user = snapshot.data;
             if (user != null
                 ) {
-              print("user is logged in");
-              print(user);
+
               return HomePage();
             } else {
-              print("user is not logged in");
+
               return AuthPage();
             }
           },

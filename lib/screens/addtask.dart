@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hes_pm/model/project.dart';
 import 'package:hes_pm/model/task.dart';
 import 'package:hes_pm/screens/reviewproject.dart';
@@ -9,19 +8,17 @@ import 'package:hes_pm/widgets/mytextformField.dart';
 import 'package:hes_pm/widgets/singletask.dart';
 
 class AddTask extends StatefulWidget {
-  const AddTask(
-      {Key? key,
-      required this.name,
-      required this.startDate,
-      required this.dueDate,
-      required this.location,
-      this.hours})
-      : super(key: key);
+  const AddTask({
+    Key? key,
+    required this.name,
+    required this.startDate,
+    required this.dueDate,
+    required this.location,
+  }) : super(key: key);
   final String name;
   final DateTime startDate;
   final DateTime dueDate;
   final String location;
-  final hours;
 
   @override
   State<AddTask> createState() => _AddTaskState();
@@ -29,20 +26,26 @@ class AddTask extends StatefulWidget {
 
 final GlobalKey<ScaffoldState> _addTaskKey = GlobalKey<ScaffoldState>();
 final GlobalKey<FormState> _formAddTaskKey = GlobalKey<FormState>();
+final TextEditingController _numberHelper = TextEditingController();
+final TextEditingController _numberFitter = TextEditingController();
+final TextEditingController _numberWelder = TextEditingController();
+final TextEditingController _daysHelper = TextEditingController();
+final TextEditingController _daysFitter = TextEditingController();
+final TextEditingController _daysWelder = TextEditingController();
 final TextEditingController _name = TextEditingController();
-bool _welding = false;
-bool _helper = false;
-bool _fitter = false;
+
 bool _simul = false;
 
-TextEditingController _hours = TextEditingController();
+
 
 class _AddTaskState extends State<AddTask> {
   List<Task> taskList = [];
   int counter = 1;
 
 
+
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Add Tasks", style: TextStyle(color: Colors.black)),
@@ -73,6 +76,7 @@ class _AddTaskState extends State<AddTask> {
                         )
                       ],
                     ),
+                    SizedBox(height: getHeight(2),),
                     TextFormField(
                       controller: _name,
                       decoration: InputDecoration(
@@ -89,99 +93,102 @@ class _AddTaskState extends State<AddTask> {
                       },
                     ),
                     SizedBox(
-                      height: getHeight(5),
+                      height: getHeight(2),
                     ),
-                    NumberTextField(controller: _hours, labelText: 'Hours'),
 
-                    SizedBox(height: getHeight(5)),
-                    Column(
-                      children: [
-                        Row(
+
+                    Container(
+                      height: getHeight(5),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            Text("Helpers: "),
                             Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1, color: Colors.lightBlue),
-                                borderRadius: BorderRadius.all(Radius.circular(
-                                        5.0) //                 <--- border radius here
-                                    ),
-                              ),
-                              width: getWidth(40),
-                              child: CheckboxListTile(
-                                title: Text("Welding: "),
-                                value: _welding,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _welding = newValue!;
-                                  });
-                                },
+                              width: getWidth(30),
+                              child: NumberTextField(
+                                obserIcon: false,
+                                labelText: "#",
+                                controller: _numberHelper,
+
                               ),
                             ),
                             Container(
                               width: getWidth(40),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1, color: Colors.lightBlue),
-                                borderRadius: BorderRadius.all(Radius.circular(
-                                        5.0) //                 <--- border radius here
-                                    ),
-                              ),
-                              child: CheckboxListTile(
-                                title: Text("Helper: "),
-                                value: _helper,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _helper = newValue!;
-                                  });
-                                },
-                              ),
+                              child: NumberTextField(
+                                  obserIcon: false,
+
+                                  labelText: "Days",
+                                  controller: _daysHelper),
                             ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              width: getWidth(40),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1, color: Colors.lightBlue),
-                                borderRadius: BorderRadius.all(Radius.circular(
-                                        5.0) //                 <--- border radius here
-                                    ),
-                              ),
-                              child: CheckboxListTile(
-                                title: Text("Fitter: "),
-                                value: _fitter,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _fitter = newValue!;
-                                  });
-                                },
-                              ),
-                            ),
-                            Container(
-                              width: getWidth(50),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1, color: Colors.lightBlue),
-                                borderRadius: BorderRadius.all(Radius.circular(
-                                        5.0) //                 <--- border radius here
-                                    ),
-                              ),
-                              child: CheckboxListTile(
-                                title: Text("Simultaneous: "),
-                                value: _simul,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _simul = newValue!;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
+                          ]),
                     ),
+                    SizedBox(height: getHeight(2),),
+                    Container(
+                      height: getHeight(5),
+                      child: Row(
+                        children: [
+                          Text("Fitters:    "),
+                          Container(
+                            width: getWidth(30),
+                            child: NumberTextField(
+                                obserIcon: false,
+
+                                labelText: "#",
+                                controller: _numberFitter),
+                          ),
+                          Container(
+                              width: getWidth(40),
+                              child: NumberTextField(
+                                  obserIcon: false,
+
+                                  labelText: "Days",
+                                  controller: _daysFitter)),
+                        ],
+                      ),
+                    ),SizedBox(height: getHeight(2),),
+                    Container(
+                      height: getHeight(5),
+                      child: Row(
+                        children: [
+                          Text("Welders: "),
+                          Container(
+                            width: getWidth(30),
+                            child: NumberTextField(
+                                obserIcon: false,
+
+                                labelText: "#",
+                                controller: _numberWelder),
+                          ),
+                          Container(
+                            width: getWidth(40),
+                            child: NumberTextField(
+                                obserIcon: false,
+
+                                labelText: "Days",
+                                controller: _daysWelder),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+
+
+                          Container(
+                            width: getWidth(50),
+                            height: getHeight(5),
+                            child: CheckboxListTile(
+                              title: Text("Simultaneous: "),
+                              value: _simul,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _simul = newValue!;
+                                });
+                              },
+                            ),
+                          )
+                        ]),
                     SizedBox(
                       height: getHeight(5),
                     ),
@@ -190,44 +197,62 @@ class _AddTaskState extends State<AddTask> {
                       children: [
                         MyButton(
                             name: "Add Task",
-                            onPressed: () {if (_formAddTaskKey.currentState!.validate()) {
-                              setState(() {
-                                var task = Task(
-                                    fitter: _fitter,
-                                    helper: _helper,
-                                    hours: double.parse(_hours.text),
-                                    name: _name.text,
-                                    simul: _simul,
-                                    welding: _welding,
-                                    index: counter-1);
-                                taskList.add(task);
-                                _formAddTaskKey.currentState?.reset();
-                                _fitter = false;
-                                _helper = false;
-                                _name.clear();
-                                _hours.clear();
-                                _simul = false;
-                                _welding = false;
-                                counter++;
-                              });
-                            }},
+                            onPressed: () {
+                              if (_formAddTaskKey.currentState!.validate()) {
+                                setState(() {
+                                  var task = Task(
+                                      days: double.parse(_numberWelder.text) *
+                                              double.parse(_daysWelder.text) +
+                                          double.parse(_numberFitter.text) *
+                                              double.parse(_daysFitter.text) +
+                                          double.parse(_numberHelper.text) *
+                                              double.parse(_daysHelper.text),
+
+                                      name: _name.text,
+                                      simul: _simul,
+                                      index: counter,
+                                      completion: false,
+                                      employeeSchedule: [EmployeeTask.init()]);
+                                  taskList.add(task);
+                                  _formAddTaskKey.currentState?.reset();
+
+                                  _name.clear();
+
+                                  _numberFitter.clear();
+                                  _daysFitter.clear();
+                                  _numberHelper.clear();
+                                  _daysHelper.clear();
+                                  _numberWelder.clear();
+                                  _daysWelder.clear();
+                                  _simul = false;
+
+                                  counter++;
+                                });
+                              }
+                            },
                             width: getWidth(40)),
                         SizedBox(
                           width: getWidth(5),
                         ),
                         MyButton(
-                          onPressed: () {if (taskList.isNotEmpty) {
-                            Project project = Project(
-                                hours: widget.hours,
-                                tasks: taskList,
-                                name: widget.name,
-                                startDate: widget.startDate,
-                                dueDate: widget.dueDate,
-                                location: widget.location);
-                            Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>ReviewProject(project:project)));}
-                            else {
-
-                          }
+                          onPressed: () {
+                            if (taskList.isNotEmpty) {
+                              Project project = Project(
+                                  complete: false,
+                                  days: 0,
+                                  tasks: taskList,
+                                  name: widget.name,
+                                  startDate: widget.startDate,
+                                  dueDate: widget.dueDate,
+                                  location: widget.location);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) =>
+                                      ReviewProject(project: project)));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Add a Task')),
+                              );
+                            }
                           },
                           name: "Review Project",
                           width: getWidth(20),
@@ -238,7 +263,6 @@ class _AddTaskState extends State<AddTask> {
                       height: getHeight(5),
                     ),
                     SingleTask(taskList: taskList)
-
                   ]),
             ),
           ),

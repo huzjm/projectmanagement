@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:hes_pm/shared/constants.dart';
 
 import '../shared/size_config.dart';
@@ -24,25 +25,33 @@ MyTextFormField({required this.controller,required this.name, required this.icon
     ));
   }
 }
+
+
+
 class NumberTextField extends StatelessWidget {
 
-  const NumberTextField({required this.labelText,required this.controller,this.icon=const Icon(
+  const NumberTextField({required this.obserIcon,required this.labelText,required this.controller,this.icon=
     Icons.timelapse_outlined,
-    color: Colors.lightBlue,
-  )});
+
+  });
 
 
 
   final TextEditingController controller;
   final String labelText;
-  final Icon icon;
+  final  icon;
+  final bool obserIcon;
+
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+
+
       keyboardType: TextInputType.number,
       inputFormatters: [
         FilteringTextInputFormatter.allow(
-            RegExp(r'^\d+\.?\d{0,1}')),
+            RegExp(r'^\d+\.?\d{0,2}')),
       ],
       controller: controller,
       decoration: InputDecoration(
@@ -51,10 +60,8 @@ class NumberTextField extends StatelessWidget {
                 color: Colors.lightBlue, width: 1),
           ),
           border: const OutlineInputBorder(),
-          icon: Icon(
-            Icons.timelapse_outlined,
-            color: Colors.lightBlue,
-          ),
+          icon: obserIcon==true?icon:null,
+
           labelText: labelText),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -66,100 +73,6 @@ class NumberTextField extends StatelessWidget {
   }
 }
 
-// class TaskCheckbox extends StatelessWidget {
-//   const TaskCheckbox({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         Row(
-//           children: [
-//             Container(
-//               decoration: BoxDecoration(
-//                 border: Border.all(
-//                     width: 1, color: Colors.lightBlue),
-//                 borderRadius: BorderRadius.all(Radius.circular(
-//                     5.0) //                 <--- border radius here
-//                 ),
-//               ),
-//               width: getWidth(40),
-//               child: CheckboxListTile(
-//                 title: Text("Welding: "),
-//                 value: _welding,
-//                 onChanged: (newValue) {
-//                   setState(() {
-//                     _welding = newValue!;
-//                   });
-//                 },
-//               ),
-//             ),
-//             Container(
-//               width: getWidth(40),
-//               decoration: BoxDecoration(
-//                 border: Border.all(
-//                     width: 1, color: Colors.lightBlue),
-//                 borderRadius: BorderRadius.all(Radius.circular(
-//                     5.0) //                 <--- border radius here
-//                 ),
-//               ),
-//               child: CheckboxListTile(
-//                 title: Text("Helper: "),
-//                 value: _helper,
-//                 onChanged: (newValue) {
-//                   setState(() {
-//                     _helper = newValue!;
-//                   });
-//                 },
-//               ),
-//             ),
-//           ],
-//         ),
-//         Row(
-//           children: [
-//             Container(
-//               width: getWidth(40),
-//               decoration: BoxDecoration(
-//                 border: Border.all(
-//                     width: 1, color: Colors.lightBlue),
-//                 borderRadius: BorderRadius.all(Radius.circular(
-//                     5.0) //                 <--- border radius here
-//                 ),
-//               ),
-//               child: CheckboxListTile(
-//                 title: Text("Fitter: "),
-//                 value: _fitter,
-//                 onChanged: (newValue) {
-//                   setState(() {
-//                     _fitter = newValue!;
-//                   });
-//                 },
-//               ),
-//             ),
-//             Container(
-//               width: getWidth(50),
-//               decoration: BoxDecoration(
-//                 border: Border.all(
-//                     width: 1, color: Colors.lightBlue),
-//                 borderRadius: BorderRadius.all(Radius.circular(
-//                     5.0) //                 <--- border radius here
-//                 ),
-//               ),
-//               child: CheckboxListTile(
-//                 title: Text("Simultaneous: "),
-//                 value: _simul,
-//                 onChanged: (newValue) {
-//                   setState(() {
-//                     _simul = newValue!;
-//                   });
-//                 },
-//               ),
-//             ),
-//           ],
-//         )
-//       ],
-//     );
-//   }
-// }
+
 
 

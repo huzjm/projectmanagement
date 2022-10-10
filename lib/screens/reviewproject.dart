@@ -6,6 +6,8 @@ import 'package:hes_pm/widgets/mybutton.dart';
 import 'package:hes_pm/widgets/singletask.dart';
 import 'package:intl/intl.dart';
 
+import '../model/task.dart';
+
 class ReviewProject extends StatefulWidget {
   const ReviewProject({Key? key, required this.project}) : super(key: key);
   final Project project;
@@ -18,6 +20,14 @@ class _ReviewProjectState extends State<ReviewProject> {
 
   @override
   Widget build(BuildContext context) {
+    double getDays(Project project) {
+      double days=0;
+      project.tasks.forEach((element){days=days+element.days;});
+      return days;
+      
+    }
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Review Project", style: TextStyle(color: Colors.black)),
@@ -45,42 +55,37 @@ class _ReviewProjectState extends State<ReviewProject> {
                   "Start Date: ${DateFormat.yMMMd().format(widget.project.startDate)}"),
               Text(
                   "Due Date: ${DateFormat.yMMMd().format(widget.project.dueDate)}"),
-              Text("Hours: ${widget.project.hours.toString()}"),
+              Text("Labor Days: ${getDays(widget.project).toString()}"),
               Text(
                 "Tasks",
                 style: TextStyle(fontSize: 18, decoration: TextDecoration.underline),
               ),
               SingleTask(taskList: widget.project.tasks),
 
-              MyButton(name: "Add Project", onPressed: (){
-                FirebaseFirestore.instance
-                      .collection("projects")
-                      .add({
-                    "projectName": widget.project.name,
-                    "startDate": widget.project.startDate,
-                    "dueDate": widget.project.dueDate,
-                    "location": widget.project.location,
-                    "hours": widget.project.hours,
-                    "tasks": widget.project.tasks
-                        .map((c) => {
-                              "hours": c.hours,
-                              "welding": c.welding,
-                              "helper": c.helper,
-                              "fitter": c.fitter,
-                              "simul": c.simul,
-                              "name": c.name,
-                              "index":c.index
-                            })
-                        .toList(),
+              Row(
+                  mainAxisAlignment:MainAxisAlignment.center,children:[Container(width: getWidth(80),
+                child: MyButton(name: "Add Project", onPressed: (){
+                  FirebaseFirestore.instance
+                        .collection("projects")
+                        .add({
+
+                    }).then((value) {
+                      List<Task> taskList=widget.project.tasks.map((element) {return Task(name: element.name,days: element.days,employeeSchedule: element.employeeSchedule,index: element.index,simul: element.simul,completion: element.completion,projectId: value.id);}).toList();
+                      Project project = Project(id:value.id,days: getDays(widget.project), tasks: taskList, location: widget.project.location, startDate: widget.project.startDate, dueDate: widget.project.dueDate, name: widget.project.name);
+                      FirebaseFirestore.instance.collection("projects").doc(value.id).set(
+                        project.toMap()
+
+                          );
                   });
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Successful Submission')),
-                  );
-                while(Navigator.canPop(context)){ // Navigator.canPop return true if can pop
-                  Navigator.pop(context);
-                }
-              }, width: getWidth(20))
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Successful Submission')),
+                    );
+                  while(Navigator.canPop(context)){ // Navigator.canPop return true if can pop
+                    Navigator.pop(context);
+                  }
+                }, width: getWidth(20)),
+              )])
             ],
           ),
         ),

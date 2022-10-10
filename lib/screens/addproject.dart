@@ -28,7 +28,7 @@ class _AddProjectState extends State<AddProject> {
   DateTime dueDate = DateTime.now();
   String location = locationList.first;
   final TextEditingController _projectName = TextEditingController();
-  final TextEditingController _workHours = TextEditingController();
+  //final TextEditingController _workHours = TextEditingController();
   @override
   Widget build(BuildContext context) {
     String? dateString = DateFormat.yMMMd().format(startDate);
@@ -210,21 +210,21 @@ class _AddProjectState extends State<AddProject> {
                 SizedBox(
                   height: getHeight(5),
                 ),
-                Container(
-                  width: getWidth(60),
-                  child: NumberTextField(controller: _workHours, labelText: 'Labor Hours',)
-
-                ),
-                SizedBox(
-                  height: getHeight(5),
-                ),
+                // Container(
+                //   width: getWidth(60),
+                //   child: NumberTextField(controller: _workHours, labelText: 'Labor Hours',)
+                //
+                // ),
+                // SizedBox(
+                //   height: getHeight(5),
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
 
                       onPressed: () {if (_formAddProjectKey.currentState!.validate()) {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>AddTask(name:_projectName.text, startDate: startDate, dueDate:dueDate,location:location,hours:double.parse(_workHours.text))));}
+                        Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>AddTask(name:_projectName.text, startDate: startDate, dueDate:dueDate,location:location,)));}
 
                       },
                       child: const Text('Add Tasks'),

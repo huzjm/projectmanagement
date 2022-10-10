@@ -47,10 +47,10 @@ class _SeeProjectsState extends State<SeeProjects> {
               child: GridView.count(crossAxisCount: 1
                   ,
                   childAspectRatio: 6,
-                  mainAxisSpacing: getHeight(1),
+                  mainAxisSpacing: 2,
                   scrollDirection: Axis.vertical,
                   children: widget.projects.map((e)=> ElevatedButton(
-                    onPressed: (){Project project = Project(hours: e.hours, tasks: e.tasks, location: e.location, startDate: e.startDate, dueDate: e.dueDate, name: e.name);
+                    onPressed: (){Project project = Project(complete:e.complete,days: e.days, tasks: e.tasks, location: e.location, startDate: e.startDate, dueDate: e.dueDate, name: e.name);
                       Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>ProjectDetail(project:project)));},
                     child: Container(
                       color: Colors.lightBlueAccent,
